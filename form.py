@@ -51,9 +51,9 @@ class Form(Tk):
         for x in range(self.row):
             for y in range(self.col):
                 item = mine_list[x][y]
-                if(item['isMine']==1):
-                    self.mine_buttons[x][y].set_mine(True, PhotoImage(IMG.BOMB))
-                else:
-                    mine_count = item['mineCount']
-                    self.mine_buttons[x][y].set_mine(False, PhotoImage(IMG.LIST[mine_count]))
+
+                neighbor = item['bombNeighbors']
+                img = PhotoImage(IMG.BOMB) if item['isBomb'] else PhotoImage(IMG.LIST[neighbor])
+
+                self.mine_buttons[x][y].set_mine(item['isBomb'], neighbor, img)
         print("end")

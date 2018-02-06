@@ -14,7 +14,7 @@ def create_mine(row, col, count):
     print(neighbors)
 
     # print(np.array(mines, neighbors))
-    data = [[{'isMine':mines[x][y]==1, 'mineCount':neighbors[x][y]} for y in range(col)] for x in range(row)]
+    data = [[{'isBomb':mines[x][y]==1, 'bombNeighbors':neighbors[x][y]} for y in range(col)] for x in range(row)]
     data = np.array(data)
     print(data)
 
