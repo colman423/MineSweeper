@@ -80,6 +80,7 @@ class MineBlock(Button):
     def on_left_release(self, event):
         if self.mouseEntering:
             self.open_block()
+            print("open end!")
 
     def on_right_release(self, event):
         if self.mouseEntering:

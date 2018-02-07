@@ -7,8 +7,8 @@ def newGame(row, col, bomb):
     form = Form(row, col)
     data = create_mine(row, col, bomb)
     form.set_mines(data)
-    form.mainloop()
+    return form
 
 if __name__=="__main__" :
-    global form
-    newGame(5, 10, 10)
+    while True:
+        newGame(10, 20, 1).mainloop()
