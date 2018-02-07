@@ -2,29 +2,33 @@
 from tkinter import *
 from PIL.ImageTk import PhotoImage
 from threading import Timer
-import mine_images as IMG
-import mine_status as STATUS
+import MineImages as IMG
+import MineStatus as STATUS
 
 
 class MineBlock(Button):
+    x, y = -1, -1
+    empty_image = None
+    flag_image = None
+    ques_image = None
+    mine_image = None
+    status = STATUS.HIDE
+    isBomb = False
+    neighbor = -1
     mouseEntering = False
 
     def __init__(self, master=None, **kw):
         self.x = kw.pop('row', -1)
         self.y = kw.pop('col', -1)
-
-        self.empty_image = PhotoImage(IMG.EMPTY)
-        self.flag_image = PhotoImage(IMG.FLAG)
-        self.ques_image = PhotoImage(IMG.QUES)
-        self.mine_image = self.empty_image
-
-        self.status = STATUS.HIDE
-        self.isBomb = False
-        self.neighbor = -1
-
+        self.init_image()
         Button.__init__(self, master, relief=RAISED, image=self.empty_image, **kw)
         self.bind_event()
 
+    def init_image(self):
+        self.empty_image = PhotoImage(IMG.EMPTY)
+        self.flag_image = PhotoImage(IMG.FLAG)
+        self.ques_image = PhotoImage(IMG.QUES)
+        self.mine_image = PhotoImage(IMG.EMPTY)
 
     def set_mine(self, isBomb, neighbor, image):
         self.isBomb = isBomb
@@ -39,7 +43,7 @@ class MineBlock(Button):
         if self.isBomb:
             self.master.game_over()
         else:
-            self.master.open_neighbor(self.x, self.y)
+            self.master.open_block(self.x, self.y)
 
     def flag_block(self):
         self.status = STATUS.FLAG
