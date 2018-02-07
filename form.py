@@ -2,10 +2,11 @@
 from tkinter import *
 from tkinter import messagebox
 from PIL.ImageTk import PhotoImage
-from mineBlock import MineBlock
-import mine_images as IMG
-import mine_status as STATUS
+from MineBlock import MineBlock
+import MineImages as IMG
+import MineStatus as STATUS
 import sys
+from TimeCounter import TimeCounter
 
 
 class Form(Tk):
@@ -13,13 +14,19 @@ class Form(Tk):
     row = 0
     col = 0
     mine_buttons = None
+    safe_block = -1
+    timeCounter = None
 
-    def __init__(self, row, col):
+    def __init__(self, row, col, bomb, data):
         super().__init__()
         self.row, self.col = row, col
         self.init_menubar()
         self.init_button()
         self.init_config()
+        self.safe_block = row*col-bomb
+        self.set_mines(data)
+        self.timeCounter = TimeCounter()
+        self.timeCounter.start()
 
     def init_menubar(self):
         menubar = Menu(self)
@@ -61,9 +68,14 @@ class Form(Tk):
 
                 self.mine_buttons[x][y].set_mine(item['isBomb'], neighbor, img)
 
-    def open_neighbor(self, x, y):
+    def open_block(self, x, y):
         mine = self.mine_buttons[x][y]
-        if mine.neighbor==0:
+        self.safe_block -= 1
+
+        if self.safe_block==0:
+            self.game_success()
+
+        elif mine.neighbor==0:
             print("open neighbor")
             neighbor_list = []
             for i in [ num for num in [-1, 0, 1] if -1 < x+num < self.row]:
@@ -76,12 +88,16 @@ class Form(Tk):
 
     def game_success(self):
         print("game success!")
+        self.timeCounter.isAlive = False
+        messagebox.showinfo(message="Success!\nYour record is {0:.2f} sec.".format(self.timeCounter.time))
+        self.destroy()
 
     def game_over(self):
         print("game over!")
-        messagebox.showinfo(message="Game Over!")
+        messagebox.showwarning(message="Game Over!")
         self.destroy()
 
     def on_closing(self):
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
+            self.timeCounter.isAlive = False
             sys.exit()
