@@ -1,6 +1,4 @@
 # Python MineSweeper
-#
-
 
 ## Introduction
 A little game imitate from Windows' MineSweeper.<br>
