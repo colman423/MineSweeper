@@ -3,12 +3,11 @@
 
 
 ## Introduction
-A little game imitate from MineSweeper.
+A little game imitate from Windows' MineSweeper.<br>
+Using python3.5 and tkinter.
 
 
 ## Usage
-using python3.5 and tkinter
-
     pip install -r requirements.txt
 	python manager.py
 
